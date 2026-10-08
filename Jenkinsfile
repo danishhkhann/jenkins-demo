@@ -3,38 +3,26 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
+        stage('Build Docker Image') {
             steps {
-                echo 'Code is already checked out by Jenkins'
+                sh 'docker build -t jenkins-demo:latest .'
             }
         }
 
-        stage('Build') {
+        stage('Check Docker Image') {
             steps {
-                echo 'Building application'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                echo 'Running tests'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo 'Deploying application'
+                sh 'docker images jenkins-demo'
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline completed successfully'
+            echo 'Docker image built successfully!'
         }
 
         failure {
-            echo 'Pipeline failed'
+            echo 'Docker build failed!'
         }
 
         always {
